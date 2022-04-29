@@ -1,0 +1,35 @@
+.input{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    color: #F2CC8F;
+    border-color: #F2CC8F;
+    background: #3D405B;
+    border-radius: 15%;
+    font-size: 20px;
+    font-weight: 900;
+    text-align: center;
+}
+.input:hover {
+    color: #3D405B;
+    background-color: #F2CC8F;
+}
+
+.input::selection{
+    color: #F2CC8F;
+    background-color: #3D405B;
+}
+
+.active {
+    color: #3D405B;
+    background-color: #F2CC8F;
+    border-color: #F2CC8F;
+
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 15%;
+    font-size: 20px;
+    font-weight: 900;
+    text-align: center;
+}
