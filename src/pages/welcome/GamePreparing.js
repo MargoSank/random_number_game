@@ -2,19 +2,27 @@ import classes from "./GamePreparing.module.css";
 import ButtonSubmit from "../../common_components/ButtonSubmit";
 import ButtonNumber from "../../common_components/ButtonNumber";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-const GamePreparing = (props) => {
-    const [level , setLevel] = useState();
+export const GamePreparing = (props) => {
+    const [numberLength, setNumberLength] = useState();
     const [error, setError] = useState('')
-    const buttons = [3, 4, 5];
+    const buttons = [3, 4, 5, 6];
+    const navigate = useNavigate();
+
 
     const levelHandler = (enteredNum) => {
-        setLevel(enteredNum);
+        setNumberLength(enteredNum);
         setError('')
     }
 
     const buttonHandler = () => {
-        level ? props.setGameLevel(level) : setError("Please choose game level!");
+        if (numberLength) {
+            props.setGameLevel(numberLength);
+            navigate(`../level/${numberLength}`)
+        } else {
+            setError("Please choose number length!")
+        }
     }
 
     return (
@@ -23,13 +31,14 @@ const GamePreparing = (props) => {
             <div className={classes.wrapper}>
                 {buttons.map(el => {
                     //FixMe useCallback
-                    return <ButtonNumber key={el} onClick={() => levelHandler(el)} style={level===el ? 'active' : ''}>{el}</ButtonNumber>
+                    return <ButtonNumber key={el} onClick={() => levelHandler(el)}
+                                         style={numberLength === el ? 'active' : ''}>{el}</ButtonNumber>
                 })}
             </div>
-            {error && <p>{error}</p>}
-            <ButtonSubmit onClick={buttonHandler}>Start game</ButtonSubmit>
+            {error && <p className={classes.error}>{error}</p>}
+            <ButtonSubmit onClick={buttonHandler}>
+                Start game
+            </ButtonSubmit>
         </div>
     );
 }
-
-export default GamePreparing;

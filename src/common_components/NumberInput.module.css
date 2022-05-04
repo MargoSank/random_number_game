@@ -15,9 +15,9 @@
     background-color: #F2CC8F;
 }
 
-.input::selection{
-    color: #F2CC8F;
-    background-color: #3D405B;
+::selection{
+    color: #3D405B;
+    background-color: #F2CC8F;
 }
 
 .active {
@@ -32,4 +32,29 @@
     font-size: 20px;
     font-weight: 900;
     text-align: center;
+}
+
+.shake{
+    position: relative;
+    animation-duration: 0.15s;
+    animation-iteration-count: 4;
+    animation-name: shake;
+}
+
+@keyframes shake {
+    0% {
+        right: 0;
+    }
+
+    33% {
+        right: -3px;
+    }
+
+    66% {
+        right: 0;
+    }
+
+    100% {
+        right: +3px;
+    }
 }

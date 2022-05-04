@@ -1,76 +1,40 @@
-import {useEffect, useState} from 'react';
-import {NumberInput} from "../../common_components/NumberInput";
+import {useState} from 'react';
 import classes from "./Game.module.css";
-import HistoryTable from "./HistoryTable";
+import {ResponseFields} from "./ResponseFields";
+import {ResponseHistory} from "./ResponseHistory";
+import {useNavigate} from "react-router-dom";
 
-const Game = (props) => {
-
-    const [inputs, setInputs] = useState('   ');
+export const Game = (props) => {
+    const secretNumber = props.secretNumber.toString();
     const [answerHistory, setAnswerHistory] = useState([]);
-    const [focus, setFocus] = useState(0)
+    const navigate = useNavigate();
 
-
-    useEffect(() => {
-        window.addEventListener('keydown', submitHandler);
-        return () => {
-            window.removeEventListener("keydown", submitHandler);
+    const checkAnswerHandler = (userInput) => {
+        if (secretNumber === userInput) {
+            navigate(`../win/${secretNumber}`)
         }
-    })
-
-    const submitHandler = (e) => {
-        if (e.code === 'Enter' && !/\s/.test(inputs)) {
-            checkNumberFormHandler(inputs);
-            setInputs('   ');
-            setFocus(0);
-        }
-    }
-
-    const inputHandler = (e, idx) => {
-        const userInput = e.target.value;
-        if (/[0-9]/.test(userInput)) {
-            setInputs(prevState => {
-                const newState = prevState.split('');
-                newState[idx] = userInput;
-                return newState.join('');
-            });
-            setFocus(idx + 1);
-        }
-    }
-
-
-    const checkNumberFormHandler = userInput => {
-        const secretNumber = props.secretNumber.toString();
-        let result = [{}, {}, {}];
-
-        for (let i = 0; i < 3; i++) {
-            result[i].digit = userInput[i];
-            if (secretNumber[i] === userInput[i]) {
-                result[i].status = 'correct';
+        console.log({secretNumber}, {userInput})
+        const checkResult = secretNumber.split('').map((secretNum, i) => {
+            let digitResult = {digit: userInput[i]};
+            if (secretNum === userInput[i]) {
+                digitResult.status = 'correct';
             } else if (secretNumber.includes(userInput[i])) {
-                result[i].status = 'include';
+                digitResult.status = 'include';
             } else {
-                result[i].status = 'mistake';
+                digitResult.status = 'mistake';
             }
-        }
-
+            return digitResult
+        })
         setAnswerHistory(prevState => {
-            return [...prevState, result];
+            return [...prevState, checkResult];
         })
     }
 
     return (
         <div className={classes.prep}>
             <h2 className={classes.header}>Please enter potential number</h2>
-            <div className={classes.wrapper}>
-                <NumberInput key={0} onChange={(e) => inputHandler(e, 0)} value={inputs[0].trim()} focus={focus === 0}/>
-                <NumberInput key={1} onChange={(e) => inputHandler(e, 1)} value={inputs[1].trim()} focus={focus === 1}/>
-                <NumberInput key={2} onChange={(e) => inputHandler(e, 2)} value={inputs[2].trim()} focus={focus === 2}/>
-            </div>
-
-            <HistoryTable answers={answerHistory.reverse()}/>
-
+            <ResponseFields checkResponse={checkAnswerHandler}/>
+            <ResponseHistory answers={answerHistory}/>
         </div>
     );
 };
-
-export default Game;

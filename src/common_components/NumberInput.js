@@ -1,15 +1,18 @@
 import classes from "./NumberInput.module.css";
-import useFocus from "../hooks/useFocus";
-import React, {useEffect} from "react";
+import {useFocus} from "../hooks/useFocus";
+import {useEffect} from "react";
 
 export const NumberInput = (props) => {
     const [inputRef, setInputFocus] = useFocus();
 
     useEffect(() => {
-        if(props.focus === true) setInputFocus();
+        if (props.focus === true) setInputFocus();
     }, [props.focus])
 
+    const shakeStyle = props.shakeAction ? classes.shake : null;
 
-    return <input ref={inputRef} className={classes.input} maxLength={1} onChange={props.onChange}
-                  value={props.value}/>
-}
+    return (
+        <input className={`${classes.input} ${shakeStyle}`} ref={inputRef} maxLength={1} onChange={props.onChange}
+               value={props.value}/>
+    )
+};
