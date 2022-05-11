@@ -1,8 +1,8 @@
-import classes from "./NumberInput.module.css";
+import classes from "../style/input.module.scss";
 import {useFocus} from "../hooks/useFocus";
 import {useEffect} from "react";
 
-export const NumberInput = (props) => {
+export const InputNumber = (props) => {
     const [inputRef, setInputFocus] = useFocus();
 
     useEffect(() => {

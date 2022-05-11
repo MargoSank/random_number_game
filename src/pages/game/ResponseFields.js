@@ -1,10 +1,10 @@
-import classes from "./ResponseFields.module.css";
-import {NumberInput} from "../../common_components/NumberInput";
+import classes from "../../style/pages.module.scss";
+import {InputNumber} from "../../common_components/InputNumber";
 import {useEffect, useReducer, useState} from "react";
 import {useParams} from "react-router-dom";
 
 export const ResponseFields = props => {
-    const { level } = useParams();
+    const {level} = useParams();
     const responseLength = /^[3456]{1}$/.test(level) ? level : 3;
     const emptyInputs = " ".repeat(responseLength);
     const [inputs, setInputs] = useState(emptyInputs);
@@ -18,8 +18,9 @@ export const ResponseFields = props => {
             window.removeEventListener("keydown", submitHandler);
         }
     })
+
     useEffect(() => {
-        if(shakeAction.length === 0){
+        if (shakeAction.length === 0) {
             return
         }
         const actionClean = setTimeout(() => {
@@ -63,6 +64,12 @@ export const ResponseFields = props => {
                 return newState.join('');
             });
             setFocus(idx + 1);
+        } else if (userInput === '') {
+            setInputs(prevState => {
+                const newState = prevState.split('');
+                newState[idx] = ' ';
+                return newState.join('');
+            });
         }
     }
 
@@ -70,7 +77,7 @@ export const ResponseFields = props => {
         <div className={classes.wrapper}>
             {inputs.split('').map((el, idx) => {
                 return (
-                    <NumberInput
+                    <InputNumber
                         key={idx}
                         onChange={(e) => inputHandler(e, idx)}
                         value={inputs[idx].trim()}

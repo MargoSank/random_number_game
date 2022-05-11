@@ -1,4 +1,3 @@
-import './App.css';
 import {Container} from "./common_components/Container";
 import {Game} from "./pages/game/Game";
 import {GamePreparing} from "./pages/welcome/GamePreparing";
@@ -11,7 +10,8 @@ function App() {
     const [secretNumber, setSecretNumber] = useState();
 
     const gameLevelHandler = (level) => {
-        setSecretNumber(Math.floor(Math.random() * Math.pow(10, level)))
+        const secretNumber = Math.floor(Math.random() * Math.pow(10, level)).toString();
+        secretNumber.length === level ? setSecretNumber(secretNumber) : setSecretNumber(secretNumber.padStart(level, '0'))
     };
 
     return (

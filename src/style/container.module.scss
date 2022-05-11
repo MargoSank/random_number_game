@@ -1,0 +1,28 @@
+@use "variables" as var;
+
+.container {
+  width: 900px;
+  height: auto;
+  border: 5px solid var.$base-color;
+  border-radius: 7px;
+  margin: 50px auto;
+  text-align: center;
+
+  @media only screen and (max-width: 992px) {
+    width: 700px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    margin: 25px auto;
+    width: 500px;
+  }
+
+  @media only screen and (max-width: 520px) {
+    width: 100%;
+    border: none;
+  }
+}
+
+.game_container {
+  margin: 100px 0;
+}

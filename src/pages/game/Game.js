@@ -1,11 +1,12 @@
 import {useState} from 'react';
-import classes from "./Game.module.css";
+import classes from "../../style/pages.module.scss";
 import {ResponseFields} from "./ResponseFields";
 import {ResponseHistory} from "./ResponseHistory";
 import {useNavigate} from "react-router-dom";
+import {ContainerGame} from "../../common_components/ContainerGame";
 
 export const Game = (props) => {
-    const secretNumber = props.secretNumber.toString();
+    const secretNumber = props.secretNumber;
     const [answerHistory, setAnswerHistory] = useState([]);
     const navigate = useNavigate();
 
@@ -13,7 +14,6 @@ export const Game = (props) => {
         if (secretNumber === userInput) {
             navigate(`../win/${secretNumber}`)
         }
-        console.log({secretNumber}, {userInput})
         const checkResult = secretNumber.split('').map((secretNum, i) => {
             let digitResult = {digit: userInput[i]};
             if (secretNum === userInput[i]) {
@@ -31,10 +31,10 @@ export const Game = (props) => {
     }
 
     return (
-        <div className={classes.prep}>
-            <h2 className={classes.header}>Please enter potential number</h2>
+        <ContainerGame>
+            <h2 className={classes.header}>Enter your guess</h2>
             <ResponseFields checkResponse={checkAnswerHandler}/>
             <ResponseHistory answers={answerHistory}/>
-        </div>
+        </ContainerGame>
     );
 };

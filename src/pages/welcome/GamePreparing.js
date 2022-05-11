@@ -1,8 +1,9 @@
-import classes from "./GamePreparing.module.css";
+import classes from "../../style/pages.module.scss";
 import ButtonSubmit from "../../common_components/ButtonSubmit";
 import ButtonNumber from "../../common_components/ButtonNumber";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {ContainerGame} from "../../common_components/ContainerGame";
 
 export const GamePreparing = (props) => {
     const [numberLength, setNumberLength] = useState();
@@ -21,13 +22,13 @@ export const GamePreparing = (props) => {
             props.setGameLevel(numberLength);
             navigate(`../level/${numberLength}`)
         } else {
-            setError("Please choose number length!")
+            setError("Please select one of the level options before starting the game!")
         }
     }
 
     return (
-        <div className={classes.prep}>
-            <h2 className={classes.header}>Please select the length of the secret number</h2>
+        <ContainerGame>
+            <h2 className={classes.header}>Please choose a game level</h2>
             <div className={classes.wrapper}>
                 {buttons.map(el => {
                     //FixMe useCallback
@@ -39,6 +40,6 @@ export const GamePreparing = (props) => {
             <ButtonSubmit onClick={buttonHandler}>
                 Start game
             </ButtonSubmit>
-        </div>
+        </ContainerGame>
     );
 }
