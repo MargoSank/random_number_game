@@ -5,9 +5,21 @@ import {useParams} from "react-router-dom";
 
 export const ResponseFields = props => {
     const {level} = useParams();
-    const responseLength = /^[3456]{1}$/.test(level) ? level : 3;
+    const responseLength = /^[3456]$/.test(level) ? level : '3';
     const emptyInputs = " ".repeat(responseLength);
-    const [inputs, setInputs] = useState(emptyInputs);
+    function reducer(state, action) {
+        switch (action.type) {
+            case 'set':
+                const newState = state.split('');
+                newState[action.idx] = action.char;
+                return newState.join('');
+            case 'reset':
+                return emptyInputs;
+            default:
+                throw new Error();
+        }
+    }
+    const [inputs, dispatch] = useReducer(reducer, emptyInputs);
     const [focus, setFocus] = useState(0)
     const [shakeAction, setShakeAction] = useState([]);
     const [ignored, forceUpdate] = useReducer(x => x + 1, 1);
@@ -35,7 +47,7 @@ export const ResponseFields = props => {
         if (e.code === 'Enter' || e.code === 'NumpadEnter') {
             if (!/\s/.test(inputs)) {
                 props.checkResponse(inputs);
-                setInputs(emptyInputs);
+                dispatch({type: 'reset'});
                 setFocus(0);
             } else {
                 emptyInputsHandler(inputs);
@@ -58,18 +70,10 @@ export const ResponseFields = props => {
     const inputHandler = (e, idx) => {
         const userInput = e.target.value;
         if (/^[0-9]$/.test(userInput)) {
-            setInputs(prevState => {
-                const newState = prevState.split('');
-                newState[idx] = userInput;
-                return newState.join('');
-            });
+            dispatch({type: 'set', idx: idx, char: userInput});
             setFocus(idx + 1);
         } else if (userInput === '') {
-            setInputs(prevState => {
-                const newState = prevState.split('');
-                newState[idx] = ' ';
-                return newState.join('');
-            });
+            dispatch({type: 'set', idx: idx, char: ' '});
         }
     }
 
